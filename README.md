@@ -1,6 +1,6 @@
-Dactylorhiza small RNAs
+# Differentially targeting analysis of small RNA between _Dactylorhiza_ species
 
-Code and scripts used in the analysis for the publication:
+Code and scripts used in the analysis for the publication: <br>
 [info to be inserted] // TODO: add citation and doi
 
 
