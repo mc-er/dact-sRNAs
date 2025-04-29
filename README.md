@@ -28,13 +28,13 @@ publication: https://doi.org/10.1093/bioinformatics/btr330
 
 
 **deepTools2** <br>
-software: bamCoverage <br>
+function: bamCoverage <br>
 version: 3.5.1 <br>
 git: https://github.com/deeptools/deepTools <br>
 publication: https://doi.org/10.1093/nar/gkw257
 
 **Subread** <br>
-software: featureCounts <br>
+function: featureCounts <br>
 version: 2.0.0 <br>
 doc: https://subread.sourceforge.net/ <br>
 publication: https://doi.org/10.1093/bioinformatics/btt656
@@ -71,15 +71,22 @@ samtools index \
     {sampleID_sorted.bam}
 ```
 
-## Windowd read counts
+## Generate a file with regions of interest
+### Windowd read counts
+We want to tackle the smallRNA quantification in an annotation free approach, to also get intergenic regions targeted by small RNAs. To do this, we first count the number of reads in a 100 bp window across the genome for each sample. This is done using the `bamCoverage` function from the `deepTools2` package. We use `--normalizeUsing None` to not normalize the read counts, as we want to keep the raw counts for later filtering. 
+The output is a `bedgraph` file with the following columns:
+- chromosome
+- start position
+- end position
+- number of reads in the window
 
 ```
 bamCoverage \
-    -b {sampleID_sorted.bam} \
-    -o {sampleID_windowed-read-counts-100bp.txt} \
-    -of bedgraph \
+    --bam {sampleID_sorted.bam} \
+    --outFileName {sampleID_windowed-read-counts-100bp.txt} \
+    --outFileFormat bedgraph \
     --normalizeUsing None \
-    -bs 100
+    --binSize 100
 ```
 
 Outputs a file that looks like this: // TODO: add example
@@ -87,8 +94,8 @@ Outputs a file that looks like this: // TODO: add example
 
 ```
 
-## Extract smallRNA windows of interest
-A window of interest is defined as a 100 bp window that contains at least 10 read in any sample. These windows were extracted using the following steps:
+### Extract smallRNA windows of interest
+We then define a window of interest as a 100 bp window that contains at least 10 read in any sample. These windows were extracted using the following steps:
 - merging all sample `bedgraph` files
 - filtering for windows with at least 10 reads in any sample (column 4)
 - extracting the first three columns (chromosome, start, end)
@@ -106,12 +113,25 @@ uniq | \
 bedtools merge -i - > {genome-wide_100bp-windows-of-interest.bed}
 ```
 
-## Convert to gff3
+### Convert to gff3
+As a last step we convert the bed file to a gff3 file. This is done using a custom script `bedcov2gff.py` that was written for this purpose. The script takes the bed file as input and outputs a gff3 file with the following columns:
+- scaffold
+- source
+- feature
+- start
+- end
+- score
+- strand
+- frame
+- attributes (the ID of the feature)
+
 // TODO: add script in script folder
 
 Path to script: // TODO: add path <br>
 // TODO: add description of the script <br>
-// TODO: double check command and if its actually gff3 
+// FIXME: change rtracklayer to bed2gff3 in the script
+// FIXME: change script name to bed2gff3
+
 ```
 python3 bedcov2gff.py \ 
     -i {genome-wide_100bp-windows-of-interest.bed} \
