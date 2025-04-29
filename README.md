@@ -49,7 +49,7 @@ publication: https://doi.org/10.1093/nar/gkw257
 STAR \
     --runThreadN {threads} \
     --genomeDir {/path/to/genomeDir} \
-    --readFilesIn {sampleID.fastq} \  // FIXME: do we have paired end reads?
+    --readFilesIn {sampleID.fastq} \  // TODO: check, was data paired end?
     --outFileNamePrefix {sampleID} \
     --alignIntronMax 1 \
     --outFilterMismatchNoverLmax 0.05 \
@@ -70,7 +70,7 @@ samtools index \
 ```
 bamCoverage \
     -b {sampleID_sorted.bam} \
-    -o {sampleID_windowedReadCounts100bp.txt} \
+    -o {sampleID_windowed-read-counts-100bp.txt} \
     -of bedgraph \
     --normalizeUsing None \
     -bs 100
@@ -82,6 +82,35 @@ Outputs a file that looks like this: // TODO: add example
 ```
 
 ## Extract smallRNA windows of interest
-A window of interest is defined as a 100 bp window that contains at least 10 read. The following code extracts windows of interest from the bedgraph file and outputs a new bedgraph file containing only windows containing >= 10 reads.
+A window of interest is defined as a 100 bp window that contains at least 10 read in any sample. These windows were extracted using the following steps:
+- merging all sample `bedgraph` files
+- filtering for windows with at least 10 reads in any sample (column 4)
+- extracting the first three columns (chromosome, start, end)
+- sorting the output by chromosome and start position
+- removing duplicates
+- as a last step, neighboring windows were merged into a larger continuous window
+- save as a `bed` file
 
 ```
+cat {*_windowed-read-counts-100bp.txt} | \
+awk -F'\t' '$4>=10' | \
+cut -f1,2,3 | \
+sort -k1,1 -k2,2 -V | \
+uniq | \
+bedtools merge -i - > {genome-wide_100bp-windows-of-interest.bed}
+```
+
+## Convert to gff3
+// TODO: add script in script folder
+
+Path to script: // TODO: add path
+// TODO: add description of the script
+// TODO: double check command and if its actually gff3
+```
+python3 bedcov2gff.py \ 
+    -i {genome-wide_100bp-windows-of-interest.bed} \
+    -o {genome-wide_100bp-windows-of-interest.gff3}
+```
+
+
+
