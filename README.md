@@ -28,10 +28,16 @@ publication: https://doi.org/10.1093/bioinformatics/btr330
 
 
 **deepTools2** <br>
+software: bamCoverage <br>
 version: 3.5.1 <br>
 git: https://github.com/deeptools/deepTools <br>
 publication: https://doi.org/10.1093/nar/gkw257
 
+**Subread** <br>
+software: featureCounts <br>
+version: 2.0.0 <br>
+doc: https://subread.sourceforge.net/ <br>
+publication: https://doi.org/10.1093/bioinformatics/btt656
 
 ## Notes
 
@@ -103,14 +109,26 @@ bedtools merge -i - > {genome-wide_100bp-windows-of-interest.bed}
 ## Convert to gff3
 // TODO: add script in script folder
 
-Path to script: // TODO: add path
-// TODO: add description of the script
-// TODO: double check command and if its actually gff3
+Path to script: // TODO: add path <br>
+// TODO: add description of the script <br>
+// TODO: double check command and if its actually gff3 
 ```
 python3 bedcov2gff.py \ 
     -i {genome-wide_100bp-windows-of-interest.bed} \
     -o {genome-wide_100bp-windows-of-interest.gff3}
 ```
 
+## Quantifying smallRNA reads in windows of interest (i.e. features of interest)
 
+```
+featureCounts \
+    -t peak \
+    -g ID \
+    -T {threads} \
+    -M \
+    --fraction \
+    -a {genome-wide_100bp-windows-of-interest.gff3} \
+    -o {featureCounts_MM-fraction.txt} \
+    {*_sorted.bam}
+```
 
