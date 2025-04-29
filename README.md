@@ -8,36 +8,43 @@ Code and scripts used in the analysis for the publication: <br>
 
 **BamIndexDecoder** <br>
 version: 1.03 <br>
-git: https://github.com/gq1/illumina2bam 
+github: https://github.com/gq1/illumina2bam
 
 **CLC Genomics Workbench** <br> 
 version: 8.0 <br>
 source: [QIAGEN](https://digitalinsights.qiagen.com/products-overview/discovery-insights-portfolio/analysis-and-visualization/qiagen-clc-genomics-workbench/)
- 
-
-**STAR** <br>
-version: 2.7.3a <br>
-git: https://github.com/alexdobin/STAR <br>
-publication: https://doi.org/10.1093/bioinformatics/bts635
-
-
-**Samtools** <br>
-version: 1.10 <br>
-git: https://github.com/samtools/samtools <br>
-publication: https://doi.org/10.1093/bioinformatics/btr330
-
 
 **deepTools2** <br>
 function: bamCoverage <br>
 version: 3.5.1 <br>
-git: https://github.com/deeptools/deepTools <br>
+github: https://github.com/deeptools/deepTools <br>
 publication: https://doi.org/10.1093/nar/gkw257
+
+**EdgeR**
+version: 3.34.0 <br>
+publication: Robinson, McCarthy, & Smyth, 2010; McCarthy, Chen, & Smyth, 2012
+
+**R**
+version: 4.1.1
+
+**Samtools** <br>
+version: 1.10 <br>
+github: https://github.com/samtools/samtools <br>
+publication: https://doi.org/10.1093/bioinformatics/btr330
+
+**STAR** <br>
+version: 2.7.3a <br>
+github: https://github.com/alexdobin/STAR <br>
+publication: https://doi.org/10.1093/bioinformatics/bts635
 
 **Subread** <br>
 function: featureCounts <br>
 version: 2.0.0 <br>
 doc: https://subread.sourceforge.net/ <br>
 publication: https://doi.org/10.1093/bioinformatics/btt656
+
+**topGO**
+version: 2.44.0 <br>
 
 ## Notes
 
@@ -152,3 +159,13 @@ featureCounts \
     {*_sorted.bam}
 ```
 
+## Differential targeting (DT) by small RNAs
+**Jupyter notebook:** `.ipynb` 
+
+
+## Genomic interactions
+**Jupyter notebook:** `.ipynb` 
+
+
+## Functional interpretation of differential targeted (DT) genes
+**Jupyter notebook:** `.ipynb` 
