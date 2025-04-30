@@ -57,7 +57,14 @@ version: 2.44.0 <br>
 
 
 ## Mapping smallRNA reads to genome
-
+Mapping of the 20-24nt long reads to the _Dactylorhiza incarnata_ reference genome v.1.0 was done using STAR. With the following parameters:
+- runThreadN: threads to use
+- genomeDir: directory with the reference genome
+- readFilesIn: fastq file/-s for the sample
+- outFileNamePrefix: prefix to use for the output files
+- alignIntronMax: maximum intron length to allow for splicing, set to one since with small RNA we do not expect any splicing
+- outFilterMismatchNoverLmax: maximum number of mismatches allowed in the read, set to 0.05
+- outFilterMismatchNmax: maximum number of multimappers allowed, set to 100
 ```
 STAR \
     --runThreadN {threads} \
@@ -136,7 +143,7 @@ As a last step we convert the bed file to a gff3 file. This is done using a cust
 
 Path to script: // TODO: add path <br>
 // TODO: add description of the script <br>
-// FIXME: change rtracklayer to bed2gff3 in the script
+// FIXME: change rtracklayer to bed2gff3 in the script <br>
 // FIXME: change script name to bed2gff3
 
 ```
@@ -146,7 +153,7 @@ python3 bedcov2gff.py \
 ```
 
 ## Quantifying smallRNA reads in windows of interest (i.e. features of interest)
-
+// TODO: add description
 ```
 featureCounts \
     -t peak \
@@ -160,12 +167,17 @@ featureCounts \
 ```
 
 ## Differential targeting (DT) by small RNAs
+// TODO: make notebook for DT <br>
 **Jupyter notebook:** `.ipynb` 
 
 
 ## Genomic interactions
+// TODO: make notebook for genomic interactions <br>
 **Jupyter notebook:** `.ipynb` 
 
 
 ## Functional interpretation of differential targeted (DT) genes
+// TODO: make notebook for functional interpretation <br>
 **Jupyter notebook:** `.ipynb` 
+
+
