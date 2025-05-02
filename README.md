@@ -65,6 +65,7 @@ Mapping of the 20-24nt long reads to the _Dactylorhiza incarnata_ reference geno
 - alignIntronMax: maximum intron length to allow for splicing, set to one since with small RNA we do not expect any splicing
 - outFilterMismatchNoverLmax: maximum number of mismatches allowed in the read, set to 0.05
 - outFilterMismatchNmax: maximum number of multimappers allowed, set to 100
+
 ```
 STAR \
     --runThreadN {threads} \
@@ -180,4 +181,6 @@ featureCounts \
 // TODO: make notebook for functional interpretation <br>
 **Jupyter notebook:** `.ipynb` 
 
-
+## Intersection with RNA-seq data ([Wolfe et al. 2023](https://doi.org/10.1111/mec.17070))
+// TODO: make notebook for RNA seq intersection <br>
+**Jupyter notebook:** `.ipynb` 
