@@ -91,11 +91,7 @@ samtools index \
 ## Generate a file with regions of interest
 ### Windowd read counts
 We want to tackle the smallRNA quantification in an annotation free approach, to also get intergenic regions targeted by small RNAs. To do this, we first count the number of reads in a 100 bp window across the genome for each sample. This is done using the `bamCoverage` function from the `deepTools2` package. We use `--normalizeUsing None` to not normalize the read counts, as we want to keep the raw counts for later filtering. 
-The output is a `bedgraph` file with the following columns:
-- chromosome
-- start position
-- end position
-- number of reads in the window
+
 
 ```
 bamCoverage \
@@ -105,6 +101,11 @@ bamCoverage \
     --normalizeUsing None \
     --binSize 100
 ```
+The output is a `bedgraph` file with the following columns:
+- chromosome
+- start position
+- end position
+- number of reads in the window <br>
 
 Outputs a file that looks like this:
 ```
