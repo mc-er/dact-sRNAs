@@ -69,7 +69,7 @@ Mapping of the 20-24nt long reads to the _Dactylorhiza incarnata_ reference geno
 STAR \
     --runThreadN {threads} \
     --genomeDir {/path/to/genomeDir} \
-    --readFilesIn {sampleID.fastq} \  // TODO: check, was data paired end?
+    --readFilesIn {sampleID.fastq} \  
     --outFileNamePrefix {sampleID} \
     --alignIntronMax 1 \
     --outFilterMismatchNoverLmax 0.05 \
