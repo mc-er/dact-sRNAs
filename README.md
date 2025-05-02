@@ -20,11 +20,11 @@ version: 3.5.1 <br>
 github: https://github.com/deeptools/deepTools <br>
 publication: https://doi.org/10.1093/nar/gkw257
 
-**EdgeR**
+**EdgeR** <br>
 version: 3.34.0 <br>
-publication: Robinson, McCarthy, & Smyth, 2010; McCarthy, Chen, & Smyth, 2012
+publication: https://doi.org/10.1093/bioinformatics/btp616; https://doi.org/10.1093/nar/gks042
 
-**R**
+**R** <br>
 version: 4.1.1
 
 **Samtools** <br>
@@ -43,8 +43,10 @@ version: 2.0.0 <br>
 doc: https://subread.sourceforge.net/ <br>
 publication: https://doi.org/10.1093/bioinformatics/btt656
 
-**topGO**
+**topGO** <br>
 version: 2.44.0 <br>
+doi: https://doi.org/doi:10.18129/B9.bioc.topGO
+
 
 ## Notes
 
