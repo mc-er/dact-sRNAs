@@ -106,8 +106,13 @@ bamCoverage \
     --binSize 100
 ```
 
-Outputs a file that looks like this: // TODO: add example
+Outputs a file that looks like this:
 ```
+scaffold1  1   100 0
+scaffold1  101 200 4
+scaffold1  201 300 10
+scaffold1  301 400 4
+scaffold1  401 500 23
 
 ```
 
