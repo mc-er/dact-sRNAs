@@ -1,7 +1,13 @@
 # Differentially targeting analysis of small RNA between _Dactylorhiza_ species
 
-Code and scripts used in the analysis for the publication: <br>
-[info to be inserted] // TODO: add citation and doi
+Code and scripts used in the analysis for the manuscript: 
+
+**Small RNAs regulation and genomic harmony: insights into allopolyploid evolution in marsh orchids (Dactylorhiza)** 
+
+Mimmi C. Eriksson, Matthew Thornton, Emiliano Trucchi, Thomas M. Wolfe, Francisco Balao, Mikael Hedrén, Ovidiu Paun <br>
+
+bioRxiv 2024.11.29.626004 <br> 
+doi: https://doi.org/10.1101/2024.11.29.626004
 
 
 ## Sources
@@ -157,8 +163,18 @@ python3 bedcov2gff.py \
 ```
 
 ## Quantifying smallRNA reads in windows of interest (i.e. features of interest)
-// TODO: add description
-```
+For each 100 bp window with at last 10 reads in any sample, we quantify the number of reads in each window for all samples. This is done using the `featureCounts` function from the `Subread` package. We use the following parameters:
+
+- -t: target feature in the gff: peak 
+- -g: which entery in the attribute column to take the name from: ID 
+- -T: threads to use
+- -M: count multimappers
+- --fraction: treat multimappers as a fraction
+- -a gff file with the features to preform the count for
+- -o output file name
+- *_sorted.bam: all sample `.bam` files
+
+ ```
 featureCounts \
     -t peak \
     -g ID \
