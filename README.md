@@ -58,7 +58,35 @@ doi: https://doi.org/doi:10.18129/B9.bioc.topGO
 
 
 ## Extract and preprocess smallRNA reads
-// TODO: Add command used to demultiplex the samples
+### Demultiplexing
+Split the multiplexed small RNA libraries into individual samples using the `BamIndexDecoder` tool. This is done using the following parameters:
+- OUTPUT_DIR: path to output directory
+- OUTPUT_PREFIX: prefix to use for the output files
+- OUTPUT_FORMAT: format to use for the output files
+- BARCODE_TAG_NAME: The tag to use to store barcode read in bam records
+- INPUT: input `.bam` file to demultiplex
+- BARCODE_FILE: file with the barcodes to use for demultiplexing
+- MAX_RECORDS_IN_RAM: number of records stored in RAM before spilling to disk
+- MAX_MISMATCHES: maximum mismatches for a barcode to be considered a match
+- CREATE_MD5_FILE: whether to create an MD5 
+- COMPRESSION_LEVEL: compression level for all compressed files created
+- METRICS_FILE: file to write the per-barcode and per-lane metrics
+
+```
+java -Xmx60g -jar BamIndexDecoder.jar \
+    OUTPUT_DIR={output_dir} \
+    OUTPUT_PREFIX={library_prefix} \
+    OUTPUT_FORMAT=bam \
+    BARCODE_TAG_NAME=B2 \
+    INPUT={input.bam} \
+    BARCODE_FILE={barcode_file.txt} \
+    MAX_RECORDS_IN_RAM=50000000 \
+    MAX_MISMATCHES=2 \
+    CREATE_MD5_FILE=true \
+    COMPRESSION_LEVEL=9 \
+    METRICS_FILE={metrics.txt} 
+```
+### Extract 20-24 nt reads
 
 // TODO: Outline how 20-24 nt reads were extracted using CLC GW
 
