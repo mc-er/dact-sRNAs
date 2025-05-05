@@ -148,12 +148,7 @@ As a last step we convert the bed file to a gff3 file. This is done using a cust
 - frame
 - attributes (the ID of the feature)
 
-// TODO: add script in script folder
-
-Path to script: // TODO: add path <br>
-// TODO: add description of the script <br>
-// FIXME: change rtracklayer to bed2gff3 in the script <br>
-// FIXME: change script name to bed2gff3
+Path to script: `scripts/bed2gff3.py` <br>
 
 ```
 python3 bedcov2gff.py \ 
