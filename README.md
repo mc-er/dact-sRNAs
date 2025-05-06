@@ -216,17 +216,17 @@ featureCounts \
 
 ## Differential targeting (DT) by small RNAs
 // TODO: make notebook for DT <br>
-**Jupyter notebook:** `.ipynb` 
+**Jupyter notebook:** `notebooks/dt_analysis_edgeR.ipynb` 
 
 
 ## Genomic interactions
 // TODO: make notebook for genomic interactions <br>
-**Jupyter notebook:** `.ipynb` 
+**Jupyter notebook:** `notebooks/classify_DTpeaks_into_genomic_interactions.ipynb` 
 
 
 ## Functional interpretation of differential targeted (DT) genes
 // TODO: make notebook for functional interpretation <br>
-**Jupyter notebook:** `.ipynb` 
+**Jupyter notebook:** `notebooks/GOenrichment_topGO_DTgenes.ipynb` 
 
 ## Intersection with RNA-seq data ([Wolfe et al. 2023](https://doi.org/10.1111/mec.17070))
 // TODO: make notebook for RNA seq intersection <br>
