@@ -1,17 +1,36 @@
 ###################################################
 # differential targeting by sRNAs edgeR functions #
 ###################################################
-filter_smRNA_by_exp <- function(D, n_groups, cpm_level, sample_prop){
+filter_smRNA_by_exp <- function(D, min_samples, cpm_level, sample_prop){
+  # save a copy of the original data
   d <- D
+  # transform the counts to CPM
   D[,c(2:ncol(D))] <- cpm(D[,c(2:ncol(D))])
+  # filter the data by the number of groups and the proportion of samples that have a CPM value above the cpm_level
+  # - pivot the data to long format
+  # - make a species column based on the first letter in the sample name
+  # - group by peakID and species
+  # - make three new columns:
+  #   - cpm_filter_count: the number of samples with a CPM value above the cpm_level
+  #   - cpm_filter_prop: the proportion of samples with a CPM value above the cpm_level
+  #   - filterPASS: TRUE if the cpm_filter_count is greater than or equal to min_samples and the cpm_filter_prop is greater than or equal to sample_prop
+  # - ungroup the data
+  # - select the peakID, species, and filterPASS columns
+  # - remove duplicates
+  # - filter the data to only include peakIDs that have a filterPASS value larger than min_samples
+  # - pivot the data to wide format
+  # - return the original dataframe but only containing the peaks passing the filters
   k <- D  %>%  
     pivot_longer(!peakID, names_to = "samples", values_to = "CPM") %>% 
     mutate(species = substr(samples,1,1)) %>% 
-    group_by(peakID, species) %>% mutate(cpm_filter_count = sum(CPM > cpm_level),
-                                         cpm_filter_prop = sum(CPM > cpm_level)/length(species),
-                                         filterPASS = (cpm_filter_count >= 2 & cpm_filter_prop >= sample_prop)) %>%
-    ungroup(species) %>% dplyr::select(peakID, species, filterPASS) %>% distinct() %>%
-    filter(sum(filterPASS == FALSE) < n_groups) %>%
+    group_by(peakID, species) %>% 
+    mutate(cpm_filter_count = sum(CPM > cpm_level),
+           cpm_filter_prop = sum(CPM > cpm_level)/length(species),
+           filterPASS = (cpm_filter_count >= 2 & cpm_filter_prop >= sample_prop)) %>%
+    ungroup(species) %>% 
+    dplyr::select(peakID, species, filterPASS) %>% 
+    distinct() %>%
+    filter(sum(filterPASS == FALSE) < min_samples) %>%
     pivot_wider(names_from = species, values_from = filterPASS)
   
   d <- d[d$peakID%in%k$peakID,]

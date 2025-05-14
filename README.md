@@ -86,10 +86,9 @@ java -Xmx60g -jar BamIndexDecoder.jar \
     COMPRESSION_LEVEL=9 \
     METRICS_FILE={metrics.txt} 
 ```
-### Extract 20-24 nt reads
+### Quality filter and extract 20-24 nt reads
 
-// TODO: Outline how 20-24 nt reads were extracted using CLC GW
-
+Was done using the CLC Genomics Workbench 
 
 
 ## Mapping smallRNA reads to genome
@@ -214,8 +213,14 @@ featureCounts \
     {*_sorted.bam}
 ```
 
+## Split count files into three sets
+- 1 Sum 20-24nt columns for each sample. To be used for gene focused analysis
+- 2 Sum 20-23nt columns for each sample. To be used for TE focused analysis
+- 3 Extract 24nt columns for each sample. To be used for TE focused analysis
+
+**Jupyter notebook:** `notebooks/divide_count_table.ipynb`
+
 ## Differential targeting (DT) by small RNAs
-// TODO: make notebook for DT <br>
 **Jupyter notebook:** `notebooks/dt_analysis_edgeR.ipynb` 
 
 
