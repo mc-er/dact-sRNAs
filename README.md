@@ -225,7 +225,6 @@ featureCounts \
 
 
 ## Genomic interactions
-// TODO: make notebook for genomic interactions <br>
 **Jupyter notebook:** `notebooks/classify_DTpeaks_into_genomic_interactions.ipynb` 
 
 
