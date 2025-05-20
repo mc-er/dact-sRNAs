@@ -41,43 +41,73 @@ filter_smRNA_by_exp <- function(D, min_samples, cpm_level, sample_prop){
 # TOP GO functions #
 ####################
 
-enriched_GO <- function(id2go, fp_testGenes, testGroup){
-  geneIDs <- names(id2go)
-  genes2test <- read.table(fp_testGenes, sep="\t", header=F)
+enriched_GO <- function(go_db_fp, genes_list_fp, go_test_category, algorithm, statistic, n_top_go){
+  # load GO database
+  geneID2GO <- readMappings(go_db_fp)
+  
+  # extract gene IDs
+  geneIDs <- names(geneID2GO)
+  
+  # load lit of genes to test
+  genes2test <- read.table(genes_list_fp, sep="\t", header=F)
+  # make a table with all genes marking genes to test with a one (other genes with a zero)
   fac_table <- as.factor(geneIDs) %in% genes2test$V1 %>% as.integer() %>% factor()
   names(fac_table) <- geneIDs
   
-  GOdata <- new("topGOdata", ontology = testGroup, allGenes = fac_table, annot = annFUN.gene2GO, gene2GO = geneID2GO)
-  GOtest <- runTest(GOdata, statistic = "fisher")
+  # set up the GO enrichment analysis
+  GOdata <- new("topGOdata", ontology = go_test_category, allGenes = fac_table, annot = annFUN.gene2GO, gene2GO = geneID2GO)
+  # preform the GO enrichment
+  GOtest <- runTest(GOdata, algorithm = algorithm, statistic = statistic)
   
-  allRes <- GenTable(GOdata, weight01_pval=GOtest, orderBy = "weight01", ranksOf = "weight01", topNodes = 100, numChar = 1000) %>%
-    mutate(category = testGroup) %>%
-    dplyr::rename(ID = "GO.ID")
+  # extract result and adjust p-values
+  #  - add column with the category (BP, MF or CC)
+  allRes <- GenTable(GOdata, weight01_pval=GOtest, orderBy = "weight01", ranksOf = "weight01", topNodes = n_top_go, numChar = 1000) %>%
+    mutate(GO_category = go_test_category)
   
+  # make a new column that contains the genes in enriched GO term
+  # extract GO ids in the result data
+  allRes_GOs <- allRes$ID
+  
+  # extract genes for each GO term
   allGO <- genesInTerm(GOdata)
   
-  return(allRes)
+  # - extract all go and genes associated with them
+  # - make into a data frame
+  # - pivot GO IDs into a column instead of one column per GO ID
+  # - replace . in GO id with :
+  # - split gene column by , and place each gene on it's own line
+  # - remove all genes not in the genes to test list
+  # - group by GO ID
+  # - collapse genes into a , separated list
+  # - remove duplicated rows
+  goID_genes <- lapply(allGO[allRes$GO.ID][allRes[,1]], paste0, collapse = ", ") %>%
+    as.data.frame() %>%
+    pivot_longer(cols = starts_with("G"), names_to = "GO.ID", values_to = "genes") %>%
+    mutate(GO.ID = gsub("\\.", ":", GO.ID)) %>%
+    separate_longer_delim(genes, delim = ", ") %>%
+    filter(genes %in% genes2test$V1) %>%
+    group_by(GO.ID) %>%
+    mutate(genes = paste0(genes, collapse = ";")) %>%
+    distinct()
+
+  # add test genes to result dataframe
+  #  - rename columns
+  #  - make adjusted p values into a umberical column
+  #  - rearrange columns
+  goOUT_genes <- merge(allRes, goID_genes) %>%
+    dplyr::rename("GO_id" = "GO.ID",
+                  "GO_term" = "Term",
+                  "total_annotated_genes" = "Annotated",
+                  "expected_genes" = "Expected",
+                  "significant_genes" = "Significant",
+                  "adj_pval" = "weight01_pval",
+                  "id_significant_genes" = "genes")  %>%
+    mutate(adj_pval = as.numeric(gsub("< ", "", adj_pval)))  %>%
+    dplyr::select(GO_category, GO_id , GO_term, adj_pval, total_annotated_genes, expected_genes, significant_genes, id_significant_genes)
+
+  return(goOUT_genes)
 }
 
-list_genes_for_GO_ID <- function(id2go, go_out){
-  GO2geneID <- inverseList(id2go)
-  d <- lapply(GO2geneID[go_out$ID][go_out[,1]], paste0, collapse = ", ") %>%
-    as.data.frame() %>%
-    pivot_longer(cols = starts_with("G"), names_to = "ID", values_to = "genes") %>%
-    mutate(ID = gsub("\\.", ":", ID))
-  return(d)
-} 
-
-add_geneID_to_GOout <- function(go_out, GO_gene_df){
-  d <- merge(go_out, GO_gene_df) %>%
-    dplyr::rename(adj_pval = "weight01_pval") %>%
-    dplyr::select(category, ID , Term, adj_pval, genes) %>%
-    mutate(adj_pval = as.numeric(gsub("< ", "", adj_pval)),
-           genes = strsplit(genes, ", ")) %>%
-    unnest(genes) %>%
-    distinct()
-  return(d)
-} 
 calculate_zscore_Ngenes_Npeaks <- function(fp_edgeR_DTpeaks, outGO_genesIDs, filter_pattern){
   DTpeaks <- read.table(fp_edgeR_DTpeaks, sep="\t", header=T) %>% 
     filter(FDR <= 0.05 & grepl(filter_pattern, region)) %>% na.omit() %>% dplyr::rename(genes = "geneID")
