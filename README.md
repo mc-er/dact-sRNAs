@@ -16,7 +16,7 @@ doi: https://doi.org/10.1101/2024.11.29.626004
 version: 1.03 <br>
 github: https://github.com/gq1/illumina2bam
 
-**bedtools**
+**bedtools** <br>
 version: 2.29.2 <br>
 github: https://github.com/arq5x/bedtools2 <br>
 publication: https://doi.org/10.1093/bioinformatics/btq033
