@@ -16,6 +16,11 @@ doi: https://doi.org/10.1101/2024.11.29.626004
 version: 1.03 <br>
 github: https://github.com/gq1/illumina2bam
 
+**bedtools**
+version: 2.29.2 <br>
+github: https://github.com/arq5x/bedtools2 <br>
+publication: https://doi.org/10.1093/bioinformatics/btq033
+
 **CLC Genomics Workbench** <br> 
 version: 8.0 <br>
 source: [QIAGEN](https://digitalinsights.qiagen.com/products-overview/discovery-insights-portfolio/analysis-and-visualization/qiagen-clc-genomics-workbench/)
@@ -179,7 +184,7 @@ As a last step we convert the bed file to a gff3 file. This is done using a cust
 - score
 - strand
 - frame
-- attributes (the ID of the feature)
+- attributes (the ID of the feature in the format "schaffold:start-end")
 
 Path to script: `scripts/bed2gff3.py` <br>
 
@@ -187,6 +192,16 @@ Path to script: `scripts/bed2gff3.py` <br>
 python3 bedcov2gff.py \ 
     -i {genome-wide_100bp-windows-of-interest.bed} \
     -o {genome-wide_100bp-windows-of-interest.gff3}
+```
+
+## Extracting differentially targeted (DT) peaks associated with genes and TEs
+1. Using bedtools intersect, use -wa to keep original positions
+2. Then combining scaffold and positions into a peak id 
+3. Save to new file 
+
+```
+bedtools intersect -a {genome-wide_100bp-windows-of-interest.bed} -b {gene.bed} -wa | awk '{print $1":"$2"-"$3}' > {peakID_gene_associated.txt}
+bedtools intersect -a {genome-wide_100bp-windows-of-interest.bed} -b {te.bed} -wa | awk '{print $1":"$2"-"$3}' > {peakID_te_associated.txt}
 ```
 
 ## Quantifying smallRNA reads in windows of interest (i.e. features of interest)
@@ -226,6 +241,8 @@ featureCounts \
 
 ## Genomic interactions
 **Jupyter notebook:** `notebooks/classify_DTpeaks_into_genomic_interactions.ipynb` 
+
+
 
 
 ## Functional interpretation of differential targeted (DT) genes
