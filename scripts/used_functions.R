@@ -41,7 +41,7 @@ filter_smRNA_by_exp <- function(D, min_samples, cpm_level, sample_prop){
 # TOP GO functions #
 ####################
 
-enriched_GO <- function(go_db_fp, genes_list_fp, go_test_category, algorithm, statistic, n_top_go){
+enriched_GO <- function(go_db_fp, genes_list_fp, go_test_category, algorithm, statistic){
   # load GO database
   geneID2GO <- readMappings(go_db_fp)
   
@@ -61,7 +61,7 @@ enriched_GO <- function(go_db_fp, genes_list_fp, go_test_category, algorithm, st
   
   # extract result and adjust p-values
   #  - add column with the category (BP, MF or CC)
-  allRes <- GenTable(GOdata, weight01_pval=GOtest, orderBy = "weight01", ranksOf = "weight01", topNodes = n_top_go, numChar = 1000) %>%
+  allRes <- GenTable(GOdata, weight01_pval=GOtest, orderBy = "weight01", ranksOf = "weight01", numChar = 1000) %>%
     mutate(GO_category = go_test_category)
   
   # make a new column that contains the genes in enriched GO term

@@ -244,12 +244,5 @@ featureCounts \
 
 
 ## Functional interpretation of differential targeted (DT) genes
-// TODO: update with GO enrichment analysis
 
 **Jupyter notebook:** `notebooks/GOenrichment_topGO_DTgenes.ipynb` 
-
-
-## Intersection with RNA-seq data ([Wolfe et al. 2023](https://doi.org/10.1111/mec.17070))
-// TODO: update intersection of results
-
-**Jupyter notebook:** `notebooks/DTpeaks_DEgenes_intersect.ipynb` 
