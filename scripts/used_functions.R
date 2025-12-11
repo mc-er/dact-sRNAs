@@ -59,7 +59,7 @@ enriched_GO <- function(go_db_fp, genes_list_fp, go_test_category, algorithm, st
   # preform the GO enrichment
   GOtest <- runTest(GOdata, algorithm = algorithm, statistic = statistic)
   
-  # extract result and adjust p-values
+  # extract result 
   #  - add column with the category (BP, MF or CC)
   allRes <- GenTable(GOdata, weight01_pval=GOtest, orderBy = "weight01", ranksOf = "weight01", numChar = 1000) %>%
     mutate(GO_category = go_test_category)
@@ -92,7 +92,7 @@ enriched_GO <- function(go_db_fp, genes_list_fp, go_test_category, algorithm, st
 
   # add test genes to result dataframe
   #  - rename columns
-  #  - make adjusted p values into a umberical column
+  #  - make adjusted p values into a numerical column
   #  - rearrange columns
   goOUT_genes <- merge(allRes, goID_genes) %>%
     dplyr::rename("GO_id" = "GO.ID",
