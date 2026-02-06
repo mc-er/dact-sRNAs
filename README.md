@@ -6,8 +6,9 @@ Code and scripts used in the analysis for the manuscript:
 
 Mimmi C. Eriksson, Matthew Thornton, Emiliano Trucchi, Thomas M. Wolfe, Francisco Balao, Mikael Hedrén, Ovidiu Paun <br>
 
-bioRxiv 2024.11.29.626004 <br> 
-doi: https://doi.org/10.1101/2024.11.29.626004
+New Phytologist, 05 February 2026 <br> 
+doi: https://doi.org/10.1111/nph.70966
+
 
 
 ## Sources
